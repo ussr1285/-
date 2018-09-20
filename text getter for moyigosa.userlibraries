@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eclipse-userlibraries>
+  <library name="mysql-connector-java-5.1">
+    <archive path="C:/Users/Joe/Dropbox/과제/수평/JAVA 1학기 프로젝트 수행/text getter for moyigosa/mysql-connector-java-5.1.46/mysql-connector-java-5.1.46.jar" />
+    <archive path="C:/Users/Joe/Dropbox/과제/수평/JAVA 1학기 프로젝트 수행/text getter for moyigosa/mysql-connector-java-5.1.46/mysql-connector-java-5.1.46-bin.jar" />
+  </library>
+</eclipse-userlibraries>
+
