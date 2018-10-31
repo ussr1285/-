@@ -1,5 +1,8 @@
 package com.company;
 import java.sql.*;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.FileWriter;
 
 interface Function_input{
     void get_question(String question);
@@ -16,6 +19,7 @@ interface Sql_make_table{
 
 abstract class Abstract_Problem implements Function_input, Sql_input{
     abstract void print_info();
+    abstract void print_file() throws IOException;
 }
 
 
@@ -45,10 +49,18 @@ public class Problem extends Abstract_Problem{ //
         System.out.println("문제번호 : " + num);
         System.out.println("문제질문 : " + question);
         System.out.println("문제 보기 :" + example);
+
         for (int i = 0; i < 5; i++) {
             System.out.println((i + 1) + "번째선택지 : " + select[i]);
         }
-        System.out.println(" ");
+
+
+    }
+
+    void print_file() throws IOException {
+        PrintWriter pw = new PrintWriter(new FileWriter("d:/out.txt", true));
+        pw.println("INSERT INTO list VALUES(NULL,"+ num +",\'" + question + "\'" + ", " + "\'" + example + "\'" + ", " + "\'" + select[0] + "\'" + ", " + "\'" + select[1] + "\'" + ", " + "\'" + select[2] + "\'" + ", " + "\'" + select[3] + "\'" + ", " + "\'" + select[4] + "\'" + ",NULL,NULL,NULL" +", 2018, 9, \"영어\", 2);");
+        pw.close();
     }
 
     public void input_data(String target_db, String target_table, String sql_id, String sql_pw) throws SQLException{
@@ -60,17 +72,7 @@ public class Problem extends Abstract_Problem{ //
             Statement stmt = con.createStatement();
 
             stmt.executeUpdate(
-                    "INSERT INTO " + target_table + " VALUES("
-                            + num + ","
-                            + "\'" + question + "\'" + ","
-                            + "\'" + example + "\'" + ","
-                            + "\'" + select[0] + "\'" + ","
-                            + "\'" + select[1] + "\'" + ","
-                            + "\'" + select[2] + "\'" + ","
-                            + "\'" + select[3] + "\'" + ","
-                            + "\'" + select[4] + "\'"
-                            + ");"
-            );
+                    "INSERT INTO " + target_table + "VALUES("+ num +",\'" + question + "\'" + ", " + "\'" + example + "\'" + ", " + "\'" + select[0] + "\'" + ", " + "\'" + select[1] + "\'" + ", " + "\'" + select[2] + "\'" + ", " + "\'" + select[3] + "\'" + ", " + "\'" + select[4] + "\'" + ",NULL,NULL,NULL" +", 2018, 9, \"영어\", 2);");
             System.out.println("Insert Data Complete");
             con.close();
         } catch (Exception e) {
@@ -88,18 +90,7 @@ class SQLer implements Sql_make_table {
 
             Statement stmt = con.createStatement();
 
-            stmt.execute(
-                    "CREATE TABLE IF NOT EXISTS " + table_name +"("
-                            + "num INT NOT NULL,  "
-                            + "question TEXT NOT NULL, "
-                            + "example TEXT,  "
-                            + "select1 TEXT,  "
-                            + "select2 TEXT,  "
-                            + "select3 TEXT,  "
-                            + "select4 TEXT,  "
-                            + "select5 TEXT  "
-                            + " )"
-            );
+            stmt.execute("CREATE TABLE list(id INT PRIMARY KEY AUTO_INCREMENT, num INT, question TEXT NOT NULL, example TEXT, select1 TEXT, select2 TEXT, select3 TEXT, select4 TEXT, select5 TEXT, sound TEXT, picture TEXT, thing INT, year INT,month INT, subject VARCHAR(11), grade INT);");
             System.out.println("Table Created OR SELECTED");
         } catch (Exception e) {
             System.out.println("Mysql Server Not Connection.");
