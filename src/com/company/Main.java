@@ -56,23 +56,35 @@ public class Main {
             index_select[i][3] = temp_string[i].indexOf("④");
             index_select[i][4] = temp_string[i].indexOf("⑤");
 
-            /*
             int temp_index_dot;
-            int question_mark = temp_string[i].substring(3).indexOf("?");
-            int dot_mark = temp_string[i].substring(3).indexOf(".");
+            int dot_mark;
+            int question_mark;
+            if(temp_string[i].substring(3).indexOf("?") != -1){
+                 question_mark = temp_string[i].substring(3).indexOf("?");
+            }
+            else{
+                 question_mark = 999999999;
+            }
+
+            if(temp_string[i].substring(3).indexOf(".") != -1){
+                dot_mark = temp_string[i].substring(3).indexOf(".");
+            }
+            else{
+                dot_mark = 999999999;
+            }
 
             if (dot_mark < question_mark){
                 temp_index_dot = dot_mark;
-                //System.out.println("---------d---"+dot_mark);
-                //System.out.println("------------"+question_mark);
+                System.out.println("---"+i+"------d---"+dot_mark);
+                System.out.println("------------"+question_mark);
             }
             else{
                 temp_index_dot = question_mark;
-                //System.out.println("---------q---"+question_mark);
-                //System.out.println("------------"+dot_mark);
+                System.out.println("---"+i+"------q---"+question_mark);
+                System.out.println("------------"+dot_mark);
             }
-            */
-            int temp_index_dot = temp_string[i].substring(3).indexOf(".");
+            System.out.println("@@@@@@@@@"+temp_index_dot);
+            //int temp_index_dot = temp_string[i].substring(3).indexOf(".");
             if (temp_index_dot != -1){
                 index_question_dot[i] = temp_index_dot+3; // 바로 위의 변수 초기화에서 2부터 시작하는 문장에서의 .을 찾으므로 +2를 해주어야 원래 위치.
             }
