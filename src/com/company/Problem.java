@@ -8,6 +8,7 @@ interface Function_input{
     void get_question(String question);
     void get_example(String example);
     void get_select(int num, String select_string);
+    void get_correct(int correct);
 }
 interface Sql_input{
     void input_data(String target_db, String target_table,  String sql_id, String sql_pw) throws SQLException;
@@ -28,6 +29,7 @@ public class Problem extends Abstract_Problem{ //
     private String question;
     private String example;
     private String select[] = new String[5];
+    private int correct;
 
     Problem(int num) {
         this.num = num + 1;
@@ -36,30 +38,32 @@ public class Problem extends Abstract_Problem{ //
     public void get_question(String question) {
         this.question = question;
     }
-
     public void get_example(String example) {
         this.example = example;
     }
-
     public void get_select(int num, String select_string) {
         this.select[num] = select_string;
+    }
+    public void get_correct(int correct) {
+        this.correct = correct;
     }
 
     void print_info() {
         System.out.println("문제번호 : " + num);
         System.out.println("문제질문 : " + question);
-        System.out.println("문제 보기 :" + example);
-
+        System.out.println("문제 보기 : " + example);
         for (int i = 0; i < 5; i++) {
             System.out.println((i + 1) + "번째선택지 : " + select[i]);
         }
+        System.out.println("문제 정답 : " + correct);
+        System.out.println("");
 
 
     }
 
     void print_file() throws IOException {
         PrintWriter pw = new PrintWriter(new FileWriter("d:/out.txt", true));
-        pw.println("INSERT INTO list VALUES(NULL,"+ num +",\'" + question + "\'" + ", " + "\'" + example + "\'" + ", " + "\'" + select[0] + "\'" + ", " + "\'" + select[1] + "\'" + ", " + "\'" + select[2] + "\'" + ", " + "\'" + select[3] + "\'" + ", " + "\'" + select[4] + "\'" + ",NULL,NULL,NULL" +", 2018, 9, \"영어\", 2);");
+        pw.println("INSERT INTO list VALUES(NULL,"+ num +",\'" + question + "\'" + ", " + "\'" + example + "\'" + ", " + "\'" + select[0] + "\'" + ", " + "\'" + select[1] + "\'" + ", " + "\'" + select[2] + "\'" + ", " + "\'" + select[3] + "\'" + ", " + "\'" + select[4] + "\'" + ",NULL,NULL," + correct + ", 2018, 9, \"영어\", 2);");
         pw.close();
     }
 
