@@ -14,35 +14,38 @@ public class Main {
         String file_input_address = sc.next(); //"D:\\total.txt";
         System.out.println("당신이 분리하려는 것의 문제 수를 입력해 주십시오 :");
         int amount_problem = sc.nextInt(); //45;
+
         Problem problem[] = new Problem[amount_problem];
         for (int i=0; i<amount_problem; i++){
             problem[i] = new Problem(i);
         }
 
-        String total_text = null;
+        String total_text;
         StringBuilder temp_total_text = new StringBuilder();
         int index_num[] = new int[amount_problem];
         int index_question_dot[] = new int[amount_problem];
         int index_select[][] = new int[amount_problem][5];
         String temp_string[] = new String[amount_problem];
 
-        BufferedReader br = new BufferedReader(new FileReader(file_input_address));
+        BufferedReader br1 = new BufferedReader(new FileReader(file_input_address));
         while(true) {
-            String line = br.readLine();
+            String line = br1.readLine();
             if (line==null) break;
             temp_total_text.append(line);
         }
-        br.close();
+        br1.close();
         total_text = temp_total_text.toString();
 
         for (int i=0; i<amount_problem; i++) {
-            index_num[i] = total_text.indexOf(Integer.toString(i + 1) + ".");
+            index_num[i] = total_text.indexOf(Integer.toString(i + 1) + "."); //
             //System.out.println("-------- "+i+"st's index is aright. -----------");
         }
         //   System.out.println("first end");
         for (int i=0; i<amount_problem; i++){
+            System.out.println("---------first "+i+"st is problem?! ---------");
+
             if(i < amount_problem-1){
-                //System.out.println(index_num[i]+" "+index_num[i+1]);
+                System.out.println(index_num[i]+" "+index_num[i+1]);
                 temp_string[i] = total_text.substring(index_num[i], index_num[i+1]);
             }
             else{
@@ -59,41 +62,31 @@ public class Main {
             int temp_index_dot;
             int dot_mark;
             int question_mark;
-            if(temp_string[i].substring(3).indexOf("?") != -1){
-                 question_mark = temp_string[i].substring(3).indexOf("?");
-            }
-            else{
-                 question_mark = 999999999;
-            }
-
-            if(temp_string[i].substring(3).indexOf(".") != -1){
-                dot_mark = temp_string[i].substring(3).indexOf(".");
-            }
-            else{
-                dot_mark = 999999999;
-            }
+            if(temp_string[i].substring(3).indexOf("?") != -1){ question_mark = temp_string[i].substring(3).indexOf("?"); }
+            else{ question_mark = 999999999; }
+            if(temp_string[i].substring(3).indexOf(".") != -1){ dot_mark = temp_string[i].substring(3).indexOf("."); }
+            else{ dot_mark = 999999999; }
 
             if (dot_mark < question_mark){
                 temp_index_dot = dot_mark;
-                System.out.println("---"+i+"------d---"+dot_mark);
-                System.out.println("------------"+question_mark);
+                //System.out.println("---"+i+"------d---"+dot_mark);
+                //System.out.println("------------"+question_mark);
             }
             else{
                 temp_index_dot = question_mark;
-                System.out.println("---"+i+"------q---"+question_mark);
-                System.out.println("------------"+dot_mark);
+                //System.out.println("---"+i+"------q---"+question_mark);
+                //System.out.println("------------"+dot_mark);
             }
-            System.out.println("@@@@@@@@@"+temp_index_dot);
             //int temp_index_dot = temp_string[i].substring(3).indexOf(".");
             if (temp_index_dot != -1){
                 index_question_dot[i] = temp_index_dot+3; // 바로 위의 변수 초기화에서 2부터 시작하는 문장에서의 .을 찾으므로 +2를 해주어야 원래 위치.
             }
-
+            System.out.println("--------first "+i+"st is not problem. -----------");
         }
 
         //    System.out.println("second end");
         for(int i=0; i<amount_problem; i++){
-            System.out.println("--------- "+i+"st is problem?! ---------");
+            System.out.println("---------second "+i+"st is problem?! ---------");
             System.out.println("---------"+index_question_dot[i]+"--"+index_select[i][0]);
 
             problem[i].get_question(temp_string[i].substring(3, index_question_dot[i]+1)); //점 포함을 위해 +1
@@ -107,8 +100,49 @@ public class Main {
                     problem[i].get_select(j, temp_string[i].substring(index_select[i][j]+0)); //동일
                 }
             }
-            System.out.println("-------- "+i+"st is not problem. -----------");
+            System.out.println("--------second "+i+"st is not problem. -----------");
         }
+
+
+        System.out.println("정답이 담긴 파일 경로를 입력해 주십시오. ( ex. C:\\correct.txt )"); // 정답 수집기
+        String file_correct_address = sc.next(); //"D:\\correct.txt";
+        String total_correct_text;
+        StringBuilder temp_correct_text = new StringBuilder();
+        int correct_num[] = new int[amount_problem];
+
+        BufferedReader br2 = new BufferedReader(new FileReader(file_correct_address));
+        while(true) {
+            String line = br2.readLine();
+            if (line==null) break;
+            temp_correct_text.append(line);
+        }
+        br2.close();
+        total_correct_text = temp_correct_text.toString();
+        for (int i=0; i<amount_problem; i++) {
+            correct_num[i] = total_correct_text.indexOf(Integer.toString(i + 1)); //
+        }
+        for(int i=0; i<amount_problem; i++){
+            int temp_correct=0;
+            if (i != amount_problem-1){
+                String correct_string_temp = total_correct_text.substring(correct_num[i],correct_num[i+1]);
+                if (correct_string_temp.contains("①")){temp_correct = 1;}
+                else if (correct_string_temp.contains("②")){temp_correct = 2;}
+                else if (correct_string_temp.contains("③")){temp_correct = 3;}
+                else if (correct_string_temp.contains("④")){temp_correct = 4;}
+                else if (correct_string_temp.contains("⑤")){temp_correct = 5;}
+            }
+            else{
+                String correct_string_temp = total_correct_text.substring(correct_num[i]);
+
+                if (correct_string_temp.contains("①")){temp_correct = 1;}
+                else if (correct_string_temp.contains("②")){temp_correct = 2;}
+                else if (correct_string_temp.contains("③")){temp_correct = 3;}
+                else if (correct_string_temp.contains("④")){temp_correct = 4;}
+                else if (correct_string_temp.contains("⑤")){temp_correct = 5;}
+            }
+            problem[i].get_correct(temp_correct);
+        }
+
         for (int i=0; i<amount_problem;i++) {
             problem[i].print_info();
             problem[i].print_file();
