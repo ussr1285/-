@@ -94,10 +94,10 @@ public class Main {
             for (int j = 0; j < 5; j++){
                 if(j < 4){ // 5 - 1 = 4
                     //System.out.println("----------------"+index_select[i][j]);
-                    problem[i].get_select(j, temp_string[i].substring(index_select[i][j]+0, index_select[i][j+1])); //번호 제외를 위해 +1
+                    problem[i].get_select(j, temp_string[i].substring(index_select[i][j]+1, index_select[i][j+1])); //번호 제외를 위해 +1
                 }
                 else{
-                    problem[i].get_select(j, temp_string[i].substring(index_select[i][j]+0)); //동일
+                    problem[i].get_select(j, temp_string[i].substring(index_select[i][j]+1)); //동일
                 }
             }
             System.out.println("--------second "+i+"st is not problem. -----------");
@@ -142,10 +142,19 @@ public class Main {
             }
             problem[i].get_correct(temp_correct);
         }
+        System.out.println("추출할 모의고사 문제의 년도를 입력해주세요 : ");
+        int year =  sc.nextInt();
+        System.out.println("추출할 모의고사 문제의 월을 입력해주세요 : ");
+        int month = sc.nextInt();
+        System.out.println("추출할 모의고사 문제의 과목 입력해주세요 : ");
+        String subject = sc.next();
+        System.out.println("추출할 모의고사 문제의 학년을 입력해주세요 : ");
+        int grade = sc.nextInt();
+        //2018, 3, \"영어\", 2);");
 
         for (int i=0; i<amount_problem;i++) {
             problem[i].print_info();
-            problem[i].print_file();
+            problem[i].print_file(year, month, subject, grade);
         }
 
         System.out.println("분리완료");
