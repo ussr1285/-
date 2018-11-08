@@ -20,7 +20,7 @@ interface Sql_make_table{
 
 abstract class Abstract_Problem implements Function_input, Sql_input{
     abstract void print_info();
-    abstract void print_file() throws IOException;
+    abstract void print_file(int year, int month, String subject, int grade) throws IOException;
 }
 
 
@@ -60,10 +60,9 @@ public class Problem extends Abstract_Problem{ //
 
 
     }
-
-    void print_file() throws IOException {
+    void print_file(int year, int month, String subject, int grade) throws IOException {
         PrintWriter pw = new PrintWriter(new FileWriter("d:/out.txt", true));
-        pw.println("INSERT INTO list VALUES(NULL,"+ num +",\'" + question + "\'" + ", " + "\'" + example + "\'" + ", " + "\'" + select[0] + "\'" + ", " + "\'" + select[1] + "\'" + ", " + "\'" + select[2] + "\'" + ", " + "\'" + select[3] + "\'" + ", " + "\'" + select[4] + "\'" + ",NULL,NULL," + correct + ", 2018, 9, \"영어\", 2);");
+        pw.println("INSERT INTO list VALUES(NULL,"+ num +",\'" + question + "\'" + ", " + "\'" + example + "\'" + ", " + "\'" + select[0] + "\'" + ", " + "\'" + select[1] + "\'" + ", " + "\'" + select[2] + "\'" + ", " + "\'" + select[3] + "\'" + ", " + "\'" + select[4] + "\'" + ",NULL,NULL," + correct + ", "+year+", "+month+", \""+subject+"\", "+ grade+");");
         pw.close();
     }
 
