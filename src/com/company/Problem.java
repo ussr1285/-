@@ -9,6 +9,7 @@ interface Function_input{
     void get_example(String example);
     void get_select(int num, String select_string);
     void get_correct(int correct);
+    void get_hsj(String hsj);
 }
 interface Sql_input{
     void input_data(String target_db, String target_table,  String sql_id, String sql_pw) throws SQLException;
@@ -20,7 +21,7 @@ interface Sql_make_table{
 
 abstract class Abstract_Problem implements Function_input, Sql_input{
     abstract void print_info();
-    abstract void print_file(int year, int month, String subject, int grade) throws IOException;
+    abstract void print_file(int i, int year, int month, String subject, int grade) throws IOException;
 }
 
 
@@ -30,6 +31,7 @@ public class Problem extends Abstract_Problem{ //
     private String example;
     private String select[] = new String[5];
     private int correct;
+    private String hsj;
 
     Problem(int num) {
         this.num = num + 1;
@@ -47,6 +49,7 @@ public class Problem extends Abstract_Problem{ //
     public void get_correct(int correct) {
         this.correct = correct;
     }
+    public void get_hsj(String hsj){this.hsj = hsj;}
 
     void print_info() {
         System.out.println("문제번호 : " + num);
@@ -56,13 +59,23 @@ public class Problem extends Abstract_Problem{ //
             System.out.println((i + 1) + "번째선택지 : " + select[i]);
         }
         System.out.println("문제 정답 : " + correct);
+        System.out.println("문제 해설 : " + hsj);
         System.out.println("");
 
 
     }
-    void print_file(int year, int month, String subject, int grade) throws IOException {
+    void print_file(int i, int year, int month, String subject, int grade) throws IOException {
         PrintWriter pw = new PrintWriter(new FileWriter("d:/out.txt", true));
-        pw.println("INSERT INTO list VALUES(NULL,"+ num +",\'" + question + "\'" + ", " + "\'" + example + "\'" + ", " + "\'" + select[0] + "\'" + ", " + "\'" + select[1] + "\'" + ", " + "\'" + select[2] + "\'" + ", " + "\'" + select[3] + "\'" + ", " + "\'" + select[4] + "\'" + ",NULL,NULL," + correct + ", "+year+", "+month+", \""+subject+"\", "+ grade+");");
+
+        if(num<17){
+            pw.println("INSERT INTO list VALUES(NULL,"+ num +",\'" + question + "\'" + ", " + "\'" + example + "\'" + ", " + "\'" + select[0] + "\'" + ", " + "\'" + select[1] + "\'" + ", " + "\'" + select[2] + "\'" + ", " + "\'" + select[3] + "\'" + ", " + "\'" + select[4] + "\'" + ","+ "\'"+"/sound/"+year+"_"+month+"_"+grade+"_"+subject+"/"+num+".mp3"+"\'" +",NULL," + correct + ",  "+year+", "+month+", \""+subject+"\", "+ grade+");"); //\""+hsj+"\",
+        }
+        else if(num == 17){
+            pw.println("INSERT INTO list VALUES(NULL,"+ num +",\'" + question + "\'" + ", " + "\'" + example + "\'" + ", " + "\'" + select[0] + "\'" + ", " + "\'" + select[1] + "\'" + ", " + "\'" + select[2] + "\'" + ", " + "\'" + select[3] + "\'" + ", " + "\'" + select[4] + "\'" + ","+ "\'" +"/sound/"+year+"_"+month+"_"+grade+"_"+subject+"/"+(num-1)+".mp3"+ "\'"+",NULL," + correct + ",  "+year+", "+month+", \""+subject+"\", "+ grade+");"); //\""+hsj+"\",
+        }
+        else{
+            pw.println("INSERT INTO list VALUES(NULL,"+ num +",\'" + question + "\'" + ", " + "\'" + example + "\'" + ", " + "\'" + select[0] + "\'" + ", " + "\'" + select[1] + "\'" + ", " + "\'" + select[2] + "\'" + ", " + "\'" + select[3] + "\'" + ", " + "\'" + select[4] + "\'" + ",NULL,NULL," + correct + ",  "+year+", "+month+", \""+subject+"\", "+ grade+");"); //\""+hsj+"\",
+        }
         pw.close();
     }
 
