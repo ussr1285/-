@@ -32,6 +32,8 @@ public class Problem extends Abstract_Problem{ //
     private String select[] = new String[5];
     private int correct;
     private String hsj;
+    private String bigtype = "-";
+    private String smalltype;
 
     Problem(int num) {
         this.num = num + 1;
@@ -49,7 +51,15 @@ public class Problem extends Abstract_Problem{ //
     public void get_correct(int correct) {
         this.correct = correct;
     }
-    public void get_hsj(String hsj){this.hsj = hsj;}
+    public void get_hsj(String hsj){
+        this.hsj = hsj;
+    }
+    public void get_bigtype(String bigtype){
+        this.bigtype = bigtype;
+    }
+    public void get_smalltype(String smalltype){
+        this.smalltype = smalltype;
+    }
 
     void print_info() {
         System.out.println("문제번호 : " + num);
@@ -60,22 +70,35 @@ public class Problem extends Abstract_Problem{ //
         }
         System.out.println("문제 정답 : " + correct);
         System.out.println("문제 해설 : " + hsj);
+        System.out.println("큰 유형 : " + bigtype);
+        System.out.println("작은 유형 : " + smalltype);
         System.out.println("");
 
 
     }
     void print_file(int i, int year, int month, String subject, int grade) throws IOException {
         PrintWriter pw = new PrintWriter(new FileWriter("d:/out.txt", true));
+        String temp_subject;
+        if(subject.equals("영어")) {
+            temp_subject = "english";
+            if(num<17){
+                pw.println("INSERT INTO list VALUES(NULL,"+ num +",\'" + question + "\'" + ", " + "\'" + example + "\'" + ", " + "\'" + select[0] + "\'" + ", " + "\'" + select[1] + "\'" + ", " + "\'" + select[2] + "\'" + ", " + "\'" + select[3] + "\'" + ", " + "\'" + select[4] + "\'" + ", "+ "\'"+"/sound/"+year+"_"+month+"_"+grade+"_"+temp_subject+"/"+num+".mp3"+"\'" +", NULL, " + correct + ", "+ "\""+hsj+"\", " +"\""+bigtype+"\", " +"\""+smalltype+"\", " +year+", "+month+", \""+subject+"\", "+ grade+");");
+            }
+            else if(num == 17){
+                pw.println("INSERT INTO list VALUES(NULL,"+ num +",\'" + question + "\'" + ", " + "\'" + example + "\'" + ", " + "\'" + select[0] + "\'" + ", " + "\'" + select[1] + "\'" + ", " + "\'" + select[2] + "\'" + ", " + "\'" + select[3] + "\'" + ", " + "\'" + select[4] + "\'" + ", "+ "\'"+"/sound/"+year+"_"+month+"_"+grade+"_"+temp_subject+"/"+(num-1)+".mp3"+"\'" +", NULL, " + correct + ", "+ "\""+hsj+"\", " +"\""+bigtype+"\", " +"\""+smalltype+"\", " +year+", "+month+", \""+subject+"\", "+ grade+");");
+            }
+            else{
+                pw.println("INSERT INTO list VALUES(NULL,"+ num +",\'" + question + "\'" + ", " + "\'" + example + "\'" + ", " + "\'" + select[0] + "\'" + ", " + "\'" + select[1] + "\'" + ", " + "\'" + select[2] + "\'" + ", " + "\'" + select[3] + "\'" + ", " + "\'" + select[4] + "\'" + ", "+ "NULL" +", NULL, " + correct + ", "+ "\""+hsj+"\", "  +"\""+bigtype+"\", " +"\""+smalltype+"\", " +year+", "+month+", \""+subject+"\", "+ grade+");");
+            }
+        }
+        else if(subject.equals("국어")) {
+            temp_subject = "korean";
+        }
+        else if(subject.equals("수학")) {
+            temp_subject = "math";
+        }
 
-        if(num<17){
-            pw.println("INSERT INTO list VALUES(NULL,"+ num +",\'" + question + "\'" + ", " + "\'" + example + "\'" + ", " + "\'" + select[0] + "\'" + ", " + "\'" + select[1] + "\'" + ", " + "\'" + select[2] + "\'" + ", " + "\'" + select[3] + "\'" + ", " + "\'" + select[4] + "\'" + ","+ "\'"+"/sound/"+year+"_"+month+"_"+grade+"_"+subject+"/"+num+".mp3"+"\'" +",NULL," + correct + ",  "+year+", "+month+", \""+subject+"\", "+ grade+");"); //\""+hsj+"\",
-        }
-        else if(num == 17){
-            pw.println("INSERT INTO list VALUES(NULL,"+ num +",\'" + question + "\'" + ", " + "\'" + example + "\'" + ", " + "\'" + select[0] + "\'" + ", " + "\'" + select[1] + "\'" + ", " + "\'" + select[2] + "\'" + ", " + "\'" + select[3] + "\'" + ", " + "\'" + select[4] + "\'" + ","+ "\'" +"/sound/"+year+"_"+month+"_"+grade+"_"+subject+"/"+(num-1)+".mp3"+ "\'"+",NULL," + correct + ",  "+year+", "+month+", \""+subject+"\", "+ grade+");"); //\""+hsj+"\",
-        }
-        else{
-            pw.println("INSERT INTO list VALUES(NULL,"+ num +",\'" + question + "\'" + ", " + "\'" + example + "\'" + ", " + "\'" + select[0] + "\'" + ", " + "\'" + select[1] + "\'" + ", " + "\'" + select[2] + "\'" + ", " + "\'" + select[3] + "\'" + ", " + "\'" + select[4] + "\'" + ",NULL,NULL," + correct + ",  "+year+", "+month+", \""+subject+"\", "+ grade+");"); //\""+hsj+"\",
-        }
+
         pw.close();
     }
 
