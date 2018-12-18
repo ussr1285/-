@@ -1,4 +1,5 @@
-package com.company;
+package company.com
+
 import java.sql.*;
 import java.io.IOException;
 import java.io.PrintWriter;
