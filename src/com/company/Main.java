@@ -10,8 +10,8 @@ public class Main {
 
     public static void main (String[] args) throws IOException, SQLException {
         Scanner sc = new Scanner(System.in);
-        System.out.println("분리하려는 문제들이 담긴 텍스트파일의 경로를 입력해 주십시오. ( ex. C:\\file.txt ) : ");
-        String file_input_address = sc.next(); //"D:\\total.txt";
+        System.out.println("분리하려는 문제들이 담긴 텍스트파일의 일부 경로를 입력해 주십시오. ( ex. C:\\file.txt ) : ");
+        String file_input = sc.next(); //"D:\\total.txt";
         System.out.println("당신이 분리하려는 것의 문제 수를 입력해 주십시오 :");
         int amount_problem = sc.nextInt(); //45;
 
@@ -26,7 +26,7 @@ public class Main {
         int index_question_dot[] = new int[amount_problem];
         int index_select[][] = new int[amount_problem][5];
         String temp_string[] = new String[amount_problem];
-
+        String file_input_address = file_input+"_mun.txt";
         BufferedReader br1 = new BufferedReader(new FileReader(file_input_address));
         while(true) {
             String line = br1.readLine();
@@ -52,19 +52,24 @@ public class Main {
                 // System.out.println(index_num[i]);
                 temp_string[i] = total_text.substring(index_num[i]);
             }
-            //System.out.println(temp_string[i]);
+            System.out.println(temp_string[i]);
+
             index_select[i][0] = temp_string[i].indexOf("① ");
             index_select[i][1] = temp_string[i].indexOf("② ");
             index_select[i][2] = temp_string[i].indexOf("③ ");
             index_select[i][3] = temp_string[i].indexOf("④ ");
             index_select[i][4] = temp_string[i].indexOf("⑤ ");
 
+            for(int j=0; j<5; j++) {
+                System.out.println("확인 ---"+index_select[i][j]);
+            }
+
             int temp_index_dot;
             int dot_mark;
             int question_mark;
             if(temp_string[i].substring(3).indexOf("?") != -1){ question_mark = temp_string[i].substring(3).indexOf("?"); }
             else{ question_mark = 999999999; }
-            if(temp_string[i].substring(3).indexOf(".") != -1){ dot_mark = temp_string[i].substring(3).indexOf("."); }
+            if(temp_string[i].substring(3).indexOf(".") != -1){ dot_mark = temp_string[i].substring(3).indexOf("."); } // 점 인식을 ". " 으로 해야할 듯
             else{ dot_mark = 999999999; }
 
             if (dot_mark < question_mark){
@@ -107,8 +112,8 @@ public class Main {
 
 
         System.out.println("정답이 담긴 파일 경로를 입력해 주십시오. ( ex. C:\\correct.txt )"); // 정답 수집기
-        String file_correct_address = sc.next(); //"D:\\correct.txt";
-        //String file_correct_address = file_input_address.substring(0,15)+"_correct"+".txt";
+        //String file_correct_address = sc.next(); //"D:\\correct.txt";
+        String file_correct_address = file_input+"_correct"+".txt";
         String total_correct_text;
         StringBuilder temp_correct_text = new StringBuilder();
         int correct_num[] = new int[amount_problem];
@@ -146,10 +151,10 @@ public class Main {
             problem[i].get_correct(temp_correct);
         }
 
-/*
+
         System.out.println("해설이 담긴 파일 경로를 입력해 주십시오. ( ex. C:\\hsj.txt )"); // 해설 수집기
-        String file_hsj_address = sc.next(); //"D:\\hsj.txt";
-        //String file_hsj_address =  file_input_address.substring(0,5)+"hsj"+file_input_address.substring(8);
+        //String file_hsj_address = sc.next(); //"D:\\hsj.txt";
+        String file_hsj_address =  file_input+"_hsj"+".txt";
         String total_hsj_text;
         String temp_hsj_string[] = new String[amount_problem];
         int hsj_index_question_dot[] = new int[amount_problem];
@@ -194,14 +199,49 @@ public class Main {
                 temp_index_dot = question_mark;
             }
             if (temp_index_dot != -1){
-                hsj_index_question_dot[i] = temp_index_dot+3; // 바로 위의 변수 초기화에서 2부터 시작하는 문장에서의 .을 찾으므로 +2를 해주어야 원래 위치.
+                hsj_index_question_dot[i] = temp_index_dot;
             }
             System.out.println(i+"end------------------");
         }
         for(int i=0; i<amount_problem; i++) {
-            problem[i].get_hsj(temp_hsj_string[i].substring(0,hsj_index_question_dot[i])+"<br>"+temp_hsj_string[i].substring(hsj_index_question_dot[i]+1));
+            problem[i].get_hsj(temp_hsj_string[i].substring(3,hsj_index_question_dot[i])+"<br>"+temp_hsj_string[i].substring(hsj_index_question_dot[i]+1)); // 바로 위의 변수 초기화에서 2부터 시작하는 문장에서의 .을 찾으므로 +2를 해주어야 원래 위치.
         }
-*/
+
+        System.out.println("작은 유형이 담긴 파일 경로를 입력해 주십시오. ( ex. C:\\smalltype.txt )"); // 작은 유형 수집기
+        //String file_smalltype_address = sc.next(); //"D:\\smalltype.txt";
+        String file_smalltype_address =  file_input+"_smalltype"+".txt";
+        String total_smalltype_text;
+        String temp_smalltype_string[] = new String[amount_problem];
+        int smalltype_index_num[] = new int[45];
+
+        StringBuilder temp_smalltype_text = new StringBuilder();
+        BufferedReader br4 = new BufferedReader(new FileReader(file_smalltype_address));
+        while(true) {
+            String line = br4.readLine();
+            if (line==null) break;
+            temp_smalltype_text.append(line);
+        }
+        br4.close();
+
+        total_smalltype_text = temp_smalltype_text.toString();
+        for (int i=0; i<amount_problem; i++) {
+            smalltype_index_num[i] = total_smalltype_text.indexOf(Integer.toString(i + 1)+".");
+        }
+        for (int i=0; i<amount_problem; i++){
+            System.out.println(i+"start------------------");
+            if(i < amount_problem-1){
+                temp_smalltype_string[i] = total_smalltype_text.substring(smalltype_index_num[i], smalltype_index_num[i+1]);
+            }
+            else{
+                temp_smalltype_string[i] = total_smalltype_text.substring(smalltype_index_num[i]);
+            }
+
+            System.out.println(i+"end------------------");
+        }
+        for(int i=0; i<amount_problem; i++) {
+            problem[i].get_smalltype(temp_smalltype_string[i].substring(3));
+        }
+
 
         System.out.println("추출할 모의고사 문제의 년도를 입력해주세요 : ");
         int year =  sc.nextInt();
